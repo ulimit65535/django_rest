@@ -4,5 +4,5 @@ from . import views
 
 urlpatterns = [
     # 获取用户详情
-    url(r'^notify/$', views.ConResultView.as_view()),
+    url(r'^notify/$', views.CronResultView.as_view()),
 ]

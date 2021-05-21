@@ -8,6 +8,17 @@ class CronResultSerializer(serializers.ModelSerializer):
     class Meta:
         model = CronResult
         fields = '__all__'
+        extra_kwargs = {  # 修改字段属性
+            'create_time': {
+                'read_only': True
+            },
+            'update_time': {
+                'read_only': True
+            },
+            'has_notified': {
+                'read_only': True,
+            }
+        }
 
 
 

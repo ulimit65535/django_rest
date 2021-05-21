@@ -8,7 +8,7 @@ class CronResult(BaseModel):
     task_name = models.CharField(max_length=20, verbose_name='任务名称')
     instance_ip = models.GenericIPAddressField(verbose_name='实例ip')
     instance_name = models.CharField(max_length=20, verbose_name='实例名称')
-    is_notify = models.BooleanField(default=False)
+    has_notified = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'tb_cron_results'

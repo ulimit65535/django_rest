@@ -4,7 +4,7 @@ from .serializers import CronResultSerializer
 from .models import CronResult
 
 
-class ConResultView(ListCreateAPIView):
+class CronResultView(ListCreateAPIView):
     """用户详细信息展示"""
     serializer_class = CronResultSerializer
     queryset = CronResult.objects.all()
