@@ -35,14 +35,14 @@ if __name__ == '__main__':
         sys.exit(1)
     elif len(sys.argv) == 2:
         task_name = sys.argv[1]
+        resp = notify(task_name)
     elif len(sys.argv) == 4:
         task_name = sys.argv[1]
         hostname = sys.argv[2]
         ip = sys.argv[3]
+        resp = notify(task_name, hostname, ip)
     else:
         print('参数个数必须为1或3')
         sys.exit(1)
-    args = sys.argv
-    args.remove(sys.argv[0])
-    resp = notify(args)
+
     print(resp)
