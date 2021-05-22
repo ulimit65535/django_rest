@@ -14,13 +14,22 @@ def get_instance_info():
     return hostname, ip
 
 
-def notify(task_name, hostname=None, ip=None):
-    if hostname is None or ip is None:
-        hostname, ip = get_instance_info()
+def notify(task_name, result, message):
+    hostname, ip = get_instance_info()
+
+    if type(result) is bool:
+        pass
+    elif result == 0 or result == '0':
+        result = True
+    else:
+        result = False
+
     data = {
         'task_name': task_name,
         'instance_name': hostname,
-        'instance_ip': ip
+        'instance_ip': ip,
+        'result': result,
+        'message': message
     }
     resp = requests.post(NOTIFY_API_URL, headers={
         'Accept': 'application/json',
@@ -30,19 +39,15 @@ def notify(task_name, hostname=None, ip=None):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) <= 1:
-        print('缺少参数:task_name')
+    try:
+        task_name, result = sys.argv[1:2]
+    except ValueError:
+        print('缺少参数:task_name, result')
         sys.exit(1)
-    elif len(sys.argv) == 2:
-        task_name = sys.argv[1]
-        resp = notify(task_name)
-    elif len(sys.argv) == 4:
-        task_name = sys.argv[1]
-        hostname = sys.argv[2]
-        ip = sys.argv[3]
-        resp = notify(task_name, hostname, ip)
-    else:
-        print('参数个数必须为1或3')
-        sys.exit(1)
+    try:
+        message = sys.argv[3]
+    except ValueError:
+        message = ''
 
+    resp = notify(task_name, result, message)
     print(resp)
