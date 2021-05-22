@@ -4,6 +4,8 @@ import sys
 import requests
 import json
 
+# 所属项目
+PROJECT = 'DRFREST'
 # 接口地址
 NOTIFY_API_URL = 'http://127.0.0.1:8000/notify/'
 
@@ -25,6 +27,7 @@ def notify(task_name, result, message):
         result = False
 
     data = {
+        'project': PROJECT,
         'task_name': task_name,
         'instance_name': hostname,
         'instance_ip': ip,
