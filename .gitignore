@@ -5,6 +5,9 @@ __pycache__/
 *$py.class
 migrations
 
+dev.py
+prod.py
+
 # C extensions
 *.so
 

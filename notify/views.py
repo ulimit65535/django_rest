@@ -13,7 +13,7 @@ class CronResultView(ListCreateAPIView):
 
 
 class SendEmailView(APIView):
-    """激活邮箱"""
+    """发送邮件"""
     def get(self, request):
         crs = CronResult.objects.filter(has_notified=False)
         data = {'num_success': 0, 'num_fail': 0, 'detail': []}
