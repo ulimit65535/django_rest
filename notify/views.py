@@ -19,7 +19,7 @@ class CronResultView(ListCreateAPIView):
 class SendEmailView(APIView):
     """发送邮件"""
     def get(self, request):
-        crs = CronResult.objects.filter(has_notified=False).order_by('project')
+        crs = CronResult.objects.filter(has_notified=False).order_by('-result').order_by('project')
         data = {'num_success': 0, 'num_fail': 0, 'detail': []}
 
         for cr in crs:
@@ -34,9 +34,14 @@ class SendEmailView(APIView):
             'mail.html',
             {"data": data}
         )
+        if data['num_fail'] > 0:
+            subject = '请注意:存在执行失败任务!'
+        else:
+            subject = '定时任务执行报告'
+
         message = EmailMultiAlternatives(
-            subject='定时任务执行报告',
-            body="定时任务执行报告",
+            subject=subject,
+            body='',
             from_email=settings.EMAIL_FROM,
             to=settings.EMAIL_RECEIVERS
         )
