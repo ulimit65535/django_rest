@@ -19,7 +19,7 @@ class CronResultView(ListCreateAPIView):
 class SendEmailView(APIView):
     """发送邮件"""
     def get(self, request):
-        crs = CronResult.objects.filter(has_notified=False).order_by('-result').order_by('project')
+        crs = CronResult.objects.filter(has_notified=False).order_by('result', 'project')
         data = {'num_success': 0, 'num_fail': 0, 'detail': []}
 
         for cr in crs:
@@ -27,8 +27,8 @@ class SendEmailView(APIView):
                 data['num_success'] += 1
             else:
                 data['num_fail'] += 1
-                serializer = CronResultSerializer(cr)
-                data['detail'].append(serializer.data)
+            serializer = CronResultSerializer(cr)
+            data['detail'].append(serializer.data)
 
         html_body = render_to_string(
             'mail.html',
