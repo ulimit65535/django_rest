@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 from django.template.loader import render_to_string
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.views import APIView
@@ -11,7 +10,7 @@ from .models import CronResult
 
 
 class CronResultView(ListCreateAPIView):
-    """用户详细信息展示"""
+    """任务计划详细信息"""
     serializer_class = CronResultSerializer
     queryset = CronResult.objects.all()
 
