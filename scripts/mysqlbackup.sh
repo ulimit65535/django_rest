@@ -70,7 +70,7 @@ function initialize()
 # 调用远程通知接口
 function notify()
 {
-    curl -i -X POST -H 'Content-Type: application/json' -d "{\"project\":\"${PROJECT_NAME}\",\"task_name\":\"${TASK_NAME}\",\"instance_name\":\"${INSTANCE_NAME}\",\"result\":${result},\"message\":\"${message}\"}" ${NOTIFY_URL}
+    curl -X POST -H 'Content-Type: application/json' -d "{\"project\":\"${PROJECT_NAME}\",\"task_name\":\"${TASK_NAME}\",\"instance_name\":\"${INSTANCE_NAME}\",\"result\":${result},\"message\":\"${message}\"}" ${NOTIFY_URL} >> ${LOG_FILE} 2>&1
 }
 
 function exit_status()
