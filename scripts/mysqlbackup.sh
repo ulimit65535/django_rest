@@ -110,9 +110,9 @@ function backup_incr()
 function remote_sync()
 {
     if [ ${REMOTE_PASSWD} ];then
-        sshpass -p "${REMOTE_PASSWD}" rsync -ae "ssh -p ${REMOTE_PORT}" ${BACKUP_PATH} ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_BACKUP_PATH}/
+        sshpass -p "${REMOTE_PASSWD}" rsync -ae "ssh -p ${REMOTE_PORT} -o stricthostkeychecking=no" ${BACKUP_PATH} ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_BACKUP_PATH}/
     else
-        rsync -ae "ssh -p ${REMOTE_PORT}" ${BACKUP_PATH} ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_BACKUP_PATH}/
+        rsync -ae "ssh -p ${REMOTE_PORT} -o stricthostkeychecking=no" ${BACKUP_PATH} ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_BACKUP_PATH}/
     fi
     exit_status "远程拷贝"
 }

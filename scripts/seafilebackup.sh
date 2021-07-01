@@ -77,9 +77,9 @@ function backup_dump()
 function remote_sync()
 {
     if [ ${REMOTE_PASSWD} ];then
-        sshpass -p "${REMOTE_PASSWD}" rsync -ae "ssh -p ${REMOTE_PORT}" ${BACKUP_PATH} ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_BACKUP_PATH}/
+        sshpass -p "${REMOTE_PASSWD}" rsync -ae "ssh -p ${REMOTE_PORT} -o stricthostkeychecking=no" ${BACKUP_PATH} ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_BACKUP_PATH}/
     else
-        rsync -ae "ssh -p ${REMOTE_PORT}" ${BACKUP_PATH} ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_BACKUP_PATH}/
+        rsync -ae "ssh -p ${REMOTE_PORT} -o stricthostkeychecking=no" ${BACKUP_PATH} ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_BACKUP_PATH}/
     fi
     exit_status "远程拷贝"
 }
@@ -108,9 +108,9 @@ function remote_clean()
 function sync_data()
 {
     if [ ${REMOTE_PASSWD} ];then
-        sshpass -p "${REMOTE_PASSWD}" rsync -ae "ssh -p ${REMOTE_PORT}" ${DATA_PATH} ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_DATA_PATH}/
+        sshpass -p "${REMOTE_PASSWD}" rsync -ae "ssh -p ${REMOTE_PORT} -o stricthostkeychecking=no" ${DATA_PATH}/ ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_DATA_PATH}/
     else
-        rsync -ae "ssh -p ${REMOTE_PORT}" ${DATA_PATH} ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_DATA_PATH}/
+        rsync -ae "ssh -p ${REMOTE_PORT} -o stricthostkeychecking=no" ${DATA_PATH}/ ${REMOTE_USER}@${REMOTE_HOST}:${REMOTE_DATA_PATH}/
     fi
     exit_status "数据目录同步"
 }
@@ -118,14 +118,13 @@ function sync_data()
 
 initialize
 backup_dump
+local_clean
 
 if [ ${REMOTE_HOST} ];then
     remote_sync
     remote_clean
     sync_data
 fi
-
-local_clean
 
 if [ ${NOTIFY_URL} ];then
     notify
