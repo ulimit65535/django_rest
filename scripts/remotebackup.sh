@@ -48,7 +48,7 @@ function remote_sync()
 {
     last_backups=`find ${BACKUP_BASE}/* -maxdepth 0 -name "*${FILE_SUFFIX}" -type f -mtime -1`
     test -n ${last_backups}
-    exit_status "检查备份:${last_backups}"
+    exit_status "检查备份"
     for backup_file in ${last_backups}
     do
         if [ ${REMOTE_PASSWD} ];then
@@ -63,22 +63,22 @@ function remote_sync()
 # 本地清理
 function local_clean()
 {
-    local_clean_files=`find ${BACKUP_BASE}/* -maxdepth 0 -name "*${FILE_SUFFIX}" -type f -mtime +${RESERVE_DAYS} -print0`
+    local_clean_files=`find ${BACKUP_BASE}/* -maxdepth 0 -name "*${FILE_SUFFIX}" -type f -mtime +${RESERVE_DAYS}`
     find ${BACKUP_BASE}/* -maxdepth 0 -name "*${FILE_SUFFIX}" -type f -mtime +${RESERVE_DAYS} -exec rm -f {} \;
-    exit_status "本地清理:${local_clean_files}"
+    exit_status "本地清理"
 }
 
 # 远程清理
 function remote_clean()
 {
     if [ ${REMOTE_PASSWD} ];then
-        remote_clean_files=`sshpass -p "${REMOTE_PASSWD}" ssh -p ${REMOTE_PORT} ${REMOTE_USER}@${REMOTE_HOST} "find ${REMOTE_BACKUP_PATH}/* -maxdepth 0 -name \"*${FILE_SUFFIX}\" -type f -mtime +${REMOTE_RESERVE_DAYS}" -print0`
+        remote_clean_files=`sshpass -p "${REMOTE_PASSWD}" ssh -p ${REMOTE_PORT} ${REMOTE_USER}@${REMOTE_HOST} "find ${REMOTE_BACKUP_PATH}/* -maxdepth 0 -name \"*${FILE_SUFFIX}\" -type f -mtime +${REMOTE_RESERVE_DAYS}"`
         sshpass -p "${REMOTE_PASSWD}" ssh -p ${REMOTE_PORT} ${REMOTE_USER}@${REMOTE_HOST} "find ${REMOTE_BACKUP_PATH}/* -maxdepth 0 -name \"*${FILE_SUFFIX}\" -type f -mtime +${REMOTE_RESERVE_DAYS} -exec rm -f {} \;"
     else
-        remote_clean_files=`ssh -p ${REMOTE_PORT} ${REMOTE_USER}@${REMOTE_HOST} "find ${REMOTE_BACKUP_PATH}/* -maxdepth 0 -name \"*${FILE_SUFFIX}\" -type f -mtime +${REMOTE_RESERVE_DAYS}" -print0`
+        remote_clean_files=`ssh -p ${REMOTE_PORT} ${REMOTE_USER}@${REMOTE_HOST} "find ${REMOTE_BACKUP_PATH}/* -maxdepth 0 -name \"*${FILE_SUFFIX}\" -type f -mtime +${REMOTE_RESERVE_DAYS}"`
         ssh -p ${REMOTE_PORT} ${REMOTE_USER}@${REMOTE_HOST} "find ${REMOTE_BACKUP_PATH}/* -maxdepth 0 -name \"*${FILE_SUFFIX}\" -type f -mtime +${REMOTE_RESERVE_DAYS} -exec rm -f {} \;"
     fi
-    exit_status "远程清理:${remote_clean_files}"
+    exit_status "远程清理"
 }
 
 remote_sync

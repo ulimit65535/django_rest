@@ -89,7 +89,7 @@ function local_clean()
 {
     local_clean_dirs=`find ${BACKUP_BASE}/* -maxdepth 0 -name '20*' -type d -mtime +${RESERVE_DAYS}`
     find ${BACKUP_BASE}/* -maxdepth 0 -name '20*' -type d -mtime +${RESERVE_DAYS} -exec rm -rf {} \;
-    exit_status "本地清理:${local_clean_dirs}"
+    exit_status "本地清理"
 }
 
 # 远程清理
@@ -102,7 +102,7 @@ function remote_clean()
         remote_clean_dirs=`ssh -p ${REMOTE_PORT} ${REMOTE_USER}@${REMOTE_HOST} "find ${REMOTE_BACKUP_PATH}/* -maxdepth 0 -name '20*' -type d -mtime +${REMOTE_RESERVE_DAYS}"`
         ssh -p ${REMOTE_PORT} ${REMOTE_USER}@${REMOTE_HOST} "find ${REMOTE_BACKUP_PATH}/* -maxdepth 0 -name '20*' -type d -mtime +${REMOTE_RESERVE_DAYS} -exec rm -rf {} \;"
     fi
-    exit_status "远程清理:${remote_clean_dirs}"
+    exit_status "远程清理"
 }
 
 function sync_data()
